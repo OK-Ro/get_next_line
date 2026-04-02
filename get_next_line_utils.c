@@ -6,11 +6,12 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:51:57 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/01 17:58:35 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/02 12:12:50 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 size_t	ft_strlen(const char *s)
 {
@@ -25,29 +26,76 @@ size_t	ft_strlen(const char *s)
 	}
 	return (len);
 }
-// find first occurrence of c in s
-// return pointer to it or NULL if not found
-char	*ft_strchr(const char *s, int c)
+
+// char	*ft_strchr(const char *s, int c)
+// {
+
+// 	while (*s)
+// 	{
+// 		if (*s == (char)c)
+// 			return ((char *)s);
+// 		s++;
+// 	}
+// 	if ((char)c == '\0')
+// 		return ((char *)s);
+// 	return (NULL);
+// }
+
+
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int	i;
+	int		s1_len;
+	int		s2_len;
+	char	*joined;
+	int		i;
+	int		j;
 	
-	unsigned char *ps;
-	ps = (unsigned char *)s;
-	while (s[i])
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	joined = malloc((s1_len + s2_len + 1) * sizeof(char));
+	if (!joined)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s1[i])
 	{
-		if (s[i] == c)
-			return ((unsigned char*)ps);
+		joined[i] = s1[i];
 		i++;
 	}
-	if (s[i] == '\0')
-		return ((unsigned char*)ps);
-	return (NULL);
+	while (s2[j])
+	{
+		joined[i + j] = s2[j];
+		j++;
+	}
+	joined[i + j] = '\0';
+	return (joined);
 }
 
-// join s1 and s2 into a new string
-// return the new combined string
-char	*ft_strjoin(char const *s1, char const *s2);
+int main()
+{
+	char *s1 = "Hello ";
+	char *s2 = "World";
+	char *result = ft_strjoin(s1, s2);
+	printf("Result: %s\n", result);
+	return 0;
+}
 
-// create a duplicate of s1
-// return the new copied string
-char	*ft_strdup(const char *s1);
+// char	*ft_strdup(const char *s1)
+// {
+// 	char *duplicate;
+// 	int	i;
+	
+// 	while (s1[i])
+// 		i++;
+// 	duplicate = malloc((i + 1) * sizeof(char));
+// 	if (!duplicate)
+// 		return (NULL);
+// 	i = 0;
+// 	while (s1[i])
+// 	{
+// 		duplicate[i] = s1[i];
+// 		i++;
+// 	}
+// 	duplicate[i] = '\0';
+// 	return (duplicate);
+// }
