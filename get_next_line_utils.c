@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:51:57 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/02 12:12:50 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/02 12:28:47 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,44 +27,41 @@ size_t	ft_strlen(const char *s)
 	return (len);
 }
 
-// char	*ft_strchr(const char *s, int c)
-// {
+char	*ft_strchr(const char *s, int c)
+{
 
-// 	while (*s)
-// 	{
-// 		if (*s == (char)c)
-// 			return ((char *)s);
-// 		s++;
-// 	}
-// 	if ((char)c == '\0')
-// 		return ((char *)s);
-// 	return (NULL);
-// }
+	while (*s)
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
+	}
+	if ((char)c == '\0')
+		return ((char *)s);
+	return (NULL);
+}
 
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		s1_len;
-	int		s2_len;
 	char	*joined;
 	int		i;
 	int		j;
 	
-	s1_len = ft_strlen(s1);
-	s2_len = ft_strlen(s2);
-	joined = malloc((s1_len + s2_len + 1) * sizeof(char));
-	if (!joined)
+	if (!s1 || !s2)
 		return (NULL);
+	joined = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	i = 0;
-	j = 0;
 	while (s1[i])
 	{
 		joined[i] = s1[i];
 		i++;
 	}
+	j = 0;
 	while (s2[j])
 	{
 		joined[i + j] = s2[j];
+		i++;
 		j++;
 	}
 	joined[i + j] = '\0';
@@ -73,29 +70,30 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 int main()
 {
-	char *s1 = "Hello ";
-	char *s2 = "World";
-	char *result = ft_strjoin(s1, s2);
-	printf("Result: %s\n", result);
+	char *s1 = "Hello, ";
+	char *s2 = "world!";
+	char *joined = ft_strjoin(s1, s2);
+	printf("%s\n", joined);
+	free(joined);
 	return 0;
 }
 
-// char	*ft_strdup(const char *s1)
-// {
-// 	char *duplicate;
-// 	int	i;
+char	*ft_strdup(const char *s1)
+{
+	char *duplicate;
+	int	i;
 	
-// 	while (s1[i])
-// 		i++;
-// 	duplicate = malloc((i + 1) * sizeof(char));
-// 	if (!duplicate)
-// 		return (NULL);
-// 	i = 0;
-// 	while (s1[i])
-// 	{
-// 		duplicate[i] = s1[i];
-// 		i++;
-// 	}
-// 	duplicate[i] = '\0';
-// 	return (duplicate);
-// }
+	while (s1[i])
+		i++;
+	duplicate = malloc((i + 1) * sizeof(char));
+	if (!duplicate)
+		return (NULL);
+	i = 0;
+	while (s1[i])
+	{
+		duplicate[i] = s1[i];
+		i++;
+	}
+	duplicate[i] = '\0';
+	return (duplicate);
+}
