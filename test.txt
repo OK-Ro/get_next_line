@@ -1,0 +1,5 @@
+-Wall -Wextra -Werror -D BUFFER_SIZE=42 main.c -o gnl_test\n
+/usr/bin/ld: /tmp/main-7e7fb7.o: in function `main':
+main.c:(.text+0x82): undefined reference to `get_next_line'
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [Makefile:43: test] Error 1

@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:51:57 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/02 13:20:00 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/02 13:52:50 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,14 @@ char	*ft_strjoin(char const *s1, char const *s2)
 char	*ft_strdup(const char *s1)
 {
 	char *duplicate;
-	int	i;
+	int i;
 	
+	i = 0;
 	while (s1[i])
 		i++;
 	duplicate = malloc((i + 1) * sizeof(char));
 	if (!duplicate)
 		return (NULL);
-	i = 0;
 	while (s1[i])
 	{
 		duplicate[i] = s1[i];
@@ -111,15 +111,4 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	}
 	sub[i] = '\0';
 	return (sub);
-}
-
-int main()
-{
-	//substr test
-	char *s = "Hello, World!";			
-	char *sub = ft_substr(s, 7, 5);
-	
-	printf("Substring: '%s'\n", sub);
-	free(sub);
-	return (0);
 }

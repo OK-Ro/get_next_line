@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:51:48 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/02 13:44:12 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/02 16:29:49 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,58 @@
 #include <stdio.h>
 #include <fcntl.h>
 
-
-static char	*read_line(int fd, char *buffer)
+static char *split_line(char **leftover)
 {
-	char	*temp_buffer;
-	char	read_buffer[BUFFER_SIZE + 1];
-	ssize_t	bytes_read;
+	char *line;
+	char *temp;
+	char *newline_pos;
 
-	while (!ft_strchr(buffer, '\n'))
+	if (!*leftover)
+		return (NULL);
+	newline_pos = ft_strchr(*leftover, '\n');
+	if (newline_pos)
 	{
-		bytes_read = read(fd, read_buffer, BUFFER_SIZE);
-		if (bytes_read < 0)
-			return (NULL);
-		if (bytes_read == 0)
-			break ;
-		read_buffer[bytes_read] = '\0';
-		temp_buffer = buffer;
-		buffer = ft_strjoin(buffer, read_buffer);
-		free(temp_buffer);
+		line = ft_substr(*leftover, 0, newline_pos - *leftover + 1);
+		temp = ft_strdup(newline_pos + 1);
+		free(*leftover);
+		*leftover = temp;
 	}
-	return (buffer);
+	else
+	{
+		line = ft_strdup(*leftover);
+		free(*leftover);
+		*leftover = NULL;
+	}
+	return (line);
 }
+
+char *get_next_line(int fd)
+{
+	static char	*leftover;
+	char		buffer[BUFFER_SIZE + 1];
+	ssize_t		bytes_read;
+	char		*temp;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	while (!leftover || !ft_strchr(leftover, '\n'))
+	{
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read <= 0)
+		{
+			if (bytes_read < 0)
+			{
+				free(leftover);
+				leftover = NULL;
+			}
+			break ;
+		}
+		buffer[bytes_read] = '\0';
+		temp = ft_strjoin(leftover, buffer);
+		free(leftover);
+		leftover = temp;
+	}
+	return (split_line(&leftover));
+}
+
+
