@@ -16,6 +16,30 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include <stdlib.h>
+#include "get_next_line.h"
+
+static char *extract_line(char *leftover)
+{
+	char *new_position;
+	char *temp;
+	char *line;
+
+	new_position = ft_strchr(leftover, '\n');
+	if (new_position)
+	{
+		line = ft_substr(leftover, 0, new_position - leftover + 1);
+		
+		temp = ft_strdup(new_position + 1);
+		free(leftover);
+		leftover = temp;
+		return (line);
+	}
+	line = ft_strdup(leftover);
+	free(leftover);
+	leftover = NULL;
+	return (line);
+}
 
 char *get_next_line(int fd)
 {
