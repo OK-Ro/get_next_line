@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:51:57 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/02 13:52:50 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/03 17:38:32 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 size_t	ft_strlen(const char *s)
 {
 	size_t	len;
+
 	if (!s)
 		return (0);
 	len = 0;
@@ -29,7 +30,8 @@ size_t	ft_strlen(const char *s)
 
 char	*ft_strchr(const char *s, int c)
 {
-
+	if (!s)
+		return (NULL);
 	while (*s)
 	{
 		if (*s == (char)c)
@@ -41,15 +43,17 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*joined;
 	int		i;
 	int		j;
-	
-	if (!s1 || !s2)
+
+	if (!s2)
 		return (NULL);
+	if (!s1)
+		return (ft_strdup(s2));
+		
 	joined = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!joined)
 		return (NULL);
@@ -71,9 +75,9 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 char	*ft_strdup(const char *s1)
 {
-	char *duplicate;
-	int i;
-	
+	char	*duplicate;
+	int		i;
+
 	i = 0;
 	while (s1[i])
 		i++;
@@ -88,18 +92,18 @@ char	*ft_strdup(const char *s1)
 	duplicate[i] = '\0';
 	return (duplicate);
 }
+
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	size_t		i;
-	size_t		s_len;
-	char		*sub;
-	
-	
+	size_t	i;
+	size_t	s_len;
+	char	*sub;
+
 	if (!s)
 		return (NULL);
 	s_len = ft_strlen(s);
 	if (start >= s_len)
-		return(ft_strdup(""));
+		return (ft_strdup(""));
 	sub = malloc((len + 1) * sizeof(char));
 	if (!sub)
 		return (NULL);

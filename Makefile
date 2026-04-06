@@ -1,7 +1,5 @@
-
 # ----------------- VARIABLES -----------------
-NAME = get_next_line
-BONUS_NAME = get_next_line_bonus
+NAME = gnl_test
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
@@ -10,38 +8,30 @@ BUFFER_SIZE ?= 42
 SRC = get_next_line.c get_next_line_utils.c
 OBJ = $(SRC:.c=.o)
 
-BONUS_SRC = get_next_line_bonus.c get_next_line_utils_bonus.c
-BONUS_OBJ = $(BONUS_SRC:.c=.o)
-
 # ----------------- RULES -----------------
 
 all: $(NAME)
 
-# Mandatory
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+$(NAME): $(OBJ) main.o
+	$(CC) $(CFLAGS) $(OBJ) main.o -o $(NAME)
 
 %.o: %.c get_next_line.h
 	$(CC) $(CFLAGS) -D BUFFER_SIZE=$(BUFFER_SIZE) -c $< -o $@
 
-# Bonus
-bonus: $(BONUS_NAME)
-
-$(BONUS_NAME): $(BONUS_OBJ)
-	$(CC) $(CFLAGS) $(BONUS_OBJ) -o $(BONUS_NAME)
+main.o: main.c
+	$(CC) $(CFLAGS) -D BUFFER_SIZE=$(BUFFER_SIZE) -c main.c
 
 # ----------------- CLEANING -----------------
 clean:
-	rm -f $(OBJ) $(BONUS_OBJ)
+	rm -f $(OBJ) main.o
 
 fclean: clean
-	rm -f $(NAME) $(BONUS_NAME)
+	rm -f $(NAME)
 
 re: fclean all
 
-test: all
-	$(CC) $(CFLAGS) -D BUFFER_SIZE=$(BUFFER_SIZE) main.c -o gnl_test
-	./gnl_test
+# ----------------- TEST -----------------
+test: re
+	./$(NAME)
 
-.PHONY: all bonus clean fclean re test
-	
+.PHONY: all clean fclean re test

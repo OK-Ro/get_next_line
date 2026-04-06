@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:41:49 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/02 13:30:10 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/03 13:10:44 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 char	*get_next_line(int fd);
 
-//helper functions
+// helper functions
 size_t	ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char const *s1, char const *s2);
