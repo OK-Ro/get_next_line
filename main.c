@@ -25,7 +25,7 @@ static char *extract_line(char **leftover)
 
 	if (!*leftover || **leftover == '\0')
 	{
-		free(leftover);
+		free(*leftover);
 		*leftover = NULL;
     	return (NULL);
 	}
@@ -90,4 +90,7 @@ int main(void)
     close(fd);
     return 0;
 }
+
+
+
 
