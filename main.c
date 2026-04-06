@@ -16,28 +16,32 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <stdlib.h>
-#include "get_next_line.h"
 
-static char *extract_line(char *leftover)
+static char *extract_line(char **leftover)
 {
 	char *new_position;
 	char *temp;
 	char *line;
 
-	new_position = ft_strchr(leftover, '\n');
+	if (!*leftover || **leftover == '\0')
+	{
+		free(leftover);
+		*leftover = NULL;
+    	return (NULL);
+	}
+	new_position = ft_strchr(*leftover, '\n');
 	if (new_position)
 	{
-		line = ft_substr(leftover, 0, new_position - leftover + 1);
+		line = ft_substr(*leftover, 0, new_position - *leftover + 1);
 		
 		temp = ft_strdup(new_position + 1);
-		free(leftover);
-		leftover = temp;
+		free(*leftover);
+		*leftover = temp;
 		return (line);
 	}
-	line = ft_strdup(leftover);
-	free(leftover);
-	leftover = NULL;
+	line = ft_strdup(*leftover);
+	free(*leftover);
+	*leftover = NULL;
 	return (line);
 }
 
@@ -54,29 +58,36 @@ char *get_next_line(int fd)
 		temp = ft_strjoin(leftover, buffer);
 		free(leftover);
 		leftover = temp;
+
+		if (ft_strchr(leftover, '\n'))
+			break;
 	}
-	return (leftover);
+	if (bytes_read == -1)      // ← here
+	{
+		free(leftover);
+		leftover = NULL;
+		return (NULL);
+	}
+	return (extract_line(&leftover));
 }
 
-int	main(void)
+int main(void)
 {
-	int		fd;
-	char	*line;
-	char *one_line;
+    int fd = open("test.txt", O_RDONLY);
+    if (fd < 0)
+    {
+        perror("open");
+        return 1;
+    }
 
-	fd = open("test.txt", O_RDONLY);
-	if (fd < 0)
-	{
-		perror("Error opening file");
-		return (1);
-	}
-	one_line = get_next_line(fd);
-	printf("%s\n", one_line);
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		printf("%s", line);
-		free(line);
-	}
-	close(fd);
-	return (0);
+    char *line;
+    while ((line = get_next_line(fd)) != NULL)
+    {
+        printf("%s", line); // line already has '\n' if file has one
+        free(line);         // always free after use
+    }
+
+    close(fd);
+    return 0;
 }
+
