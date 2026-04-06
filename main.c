@@ -16,7 +16,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-
 static char *extract_line(char **leftover)
 {
 	char *new_position;
@@ -47,28 +46,30 @@ static char *extract_line(char **leftover)
 
 char *get_next_line(int fd)
 {
-	static char *leftover;
+	static char *leftover[1024];
 	char buffer[BUFFER_SIZE + 1];
 	ssize_t bytes_read;
 	char *temp;
 
+	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
+		return (NULL);
 	while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
 		buffer[bytes_read] = '\0';
-		temp = ft_strjoin(leftover, buffer);
-		free(leftover);
-		leftover = temp;
+		temp = ft_strjoin(leftover[fd], buffer);
+		free(leftover[fd]);
+		leftover[fd] = temp;
 
-		if (ft_strchr(leftover, '\n'))
-			break;
+		if (ft_strchr(leftover[fd], '\n'))
+			break ;
 	}
-	if (bytes_read == -1)      // ← here
+	if (bytes_read < 0)      
 	{
-		free(leftover);
-		leftover = NULL;
+		free(leftover[fd]);
+		leftover[fd] = NULL;
 		return (NULL);
 	}
-	return (extract_line(&leftover));
+	return (extract_line(&leftover[fd]));
 }
 
 int main(void)
@@ -83,8 +84,8 @@ int main(void)
     char *line;
     while ((line = get_next_line(fd)) != NULL)
     {
-        printf("%s", line); // line already has '\n' if file has one
-        free(line);         // always free after use
+        printf("%s", line); 
+        free(line);         
     }
 
     close(fd);

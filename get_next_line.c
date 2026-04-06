@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:51:48 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/06 11:54:06 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/06 14:42:29 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 // 	char	*temp;
 // 	char	*newline_pos;
 
-// 	if (!*leftover)
+// 	if (!*leftover || !**leftover)
 // 		return (NULL);
 // 	newline_pos = ft_strchr(*leftover, '\n');
 // 	if (newline_pos)
@@ -41,29 +41,48 @@
 
 // char	*get_next_line(int fd)
 // {
-// 	static char	*leftover;
+// 	static char	*leftover[1024];
 // 	char		buffer[BUFFER_SIZE + 1];
 // 	ssize_t		bytes_read;
 // 	char		*temp;
 
-// 	if (fd < 0 || BUFFER_SIZE <= 0)
+// 	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
 // 		return (NULL);
-// 	while (!leftover || !ft_strchr(leftover, '\n'))
+// 	while (!leftover[fd] || !ft_strchr(leftover[fd], '\n'))
 // 	{
 // 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 // 		if (bytes_read <= 0)
 // 		{
 // 			if (bytes_read < 0)
 // 			{
-// 				free(leftover);
-// 				leftover = NULL;
+// 				free(leftover[fd]);
+// 				leftover[fd] = NULL;
 // 			}
 // 			break ;
 // 		}
 // 		buffer[bytes_read] = '\0';
-// 		temp = ft_strjoin(leftover, buffer);
-// 		free(leftover);
-// 		leftover = temp;
+// 		temp = ft_strjoin(leftover[fd], buffer);
+// 		free(leftover[fd]);
+// 		leftover[fd] = temp;
 // 	}
-// 	return (split_line(&leftover));
+// 	return (split_line(&leftover[fd]));
+// }
+// 	while (!leftover[fd] || !ft_strchr(leftover[fd], '\n'))
+// 	{
+// 		bytes_read = read(fd, buffer, BUFFER_SIZE);
+// 		if (bytes_read <= 0)
+// 		{
+// 			if (bytes_read < 0)
+// 			{
+// 				free(leftover[fd]);
+// 				leftover[fd] = NULL;
+// 			}
+// 			break ;
+// 		}
+// 		buffer[bytes_read] = '\0';
+// 		temp = ft_strjoin(leftover[fd], buffer);
+// 		free(leftover[fd]);
+// 		leftover[fd] = temp;
+// 	}
+// 	return (split_line(&leftover[fd]));
 // }
