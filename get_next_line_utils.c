@@ -6,12 +6,11 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:51:57 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/06 14:27:33 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/06 16:17:57 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 size_t	ft_strlen(const char *s)
 {
@@ -42,48 +41,58 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)s);
 	return (NULL);
 }
-char *ft_strjoin(char const *s1, char const *s2)
+static char	*concat_strings(char *dest, const char *s1, const char *s2)
 {
-    char *joined;
-    size_t i = 0, j = 0;
+	int	i;
+	int	j;
 
-    if (!s1 && !s2)
-        return NULL;
-    if (!s1)
-        return ft_strdup(s2);
-    if (!s2)
-        return ft_strdup(s1);
+	i = 0;
+	while (s1[i])
+	{
+		dest[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j])
+	{
+		dest[i] = s2[j];
+		i++;
+		j++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
 
-    joined = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-    if (!joined)
-        return NULL;
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*newstring;
 
-    while (s1[i])
-    {
-        joined[i] = s1[i];
-        i++;
-    }
-    while (s2[j])
-    {
-        joined[i + j] = s2[j];
-        j++;
-    }
-    joined[i + j] = '\0';
-    return joined;
+	if (!s1 && !s2)
+		return (NULL);
+	if (!s1)
+		return (ft_strdup(s2));
+	if (!s2)
+		return (ft_strdup(s1));
+	newstring = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!newstring)
+		return (NULL);
+	return (concat_strings(newstring, s1, s2));
 }
 
 char	*ft_strdup(const char *s1)
 {
 	char	*duplicate;
-	int		i;
+	size_t	i;
+	size_t	len;
 
-	i = 0;
-	while (s1[i])
-		i++;
-	duplicate = malloc((i + 1) * sizeof(char));
+	if (!s1)
+		return (NULL);
+	len = ft_strlen(s1);
+	duplicate = malloc((len + 1) * sizeof(char));
 	if (!duplicate)
 		return (NULL);
-	while (s1[i])
+	i = 0;
+	while (i < len)
 	{
 		duplicate[i] = s1[i];
 		i++;

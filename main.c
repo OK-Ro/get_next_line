@@ -1,14 +1,14 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   main.c                                             :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2026/03/31 19:50:09 by rokuni            #+#    #+#             */
-// /*   Updated: 2026/04/03 13:14:18 by rokuni           ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/06 16:10:17 by rokuni            #+#    #+#             */
+/*   Updated: 2026/04/06 16:24:03 by rokuni           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <fcntl.h>
@@ -16,82 +16,23 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static char *extract_line(char **leftover)
+int	main(void)
 {
-	char *new_position;
-	char *temp;
-	char *line;
+	int		fd;
+	char	*line;
 
-	if (!*leftover || **leftover == '\0')
+	fd = open("test.txt", O_RDONLY);
+	if (fd < 0)
 	{
-		free(*leftover);
-		*leftover = NULL;
-    	return (NULL);
+		perror("open");
+		return (1);
 	}
-	new_position = ft_strchr(*leftover, '\n');
-	if (new_position)
+	line = get_next_line(fd);
+	if (line)
 	{
-		line = ft_substr(*leftover, 0, new_position - *leftover + 1);
-		
-		temp = ft_strdup(new_position + 1);
-		free(*leftover);
-		*leftover = temp;
-		return (line);
+		printf("Line 1: %s", line);
+		free(line);
 	}
-	line = ft_strdup(*leftover);
-	free(*leftover);
-	*leftover = NULL;
-	return (line);
+	close(fd);
+	return (0);
 }
-
-char *get_next_line(int fd)
-{
-	static char *leftover[1024];
-	char buffer[BUFFER_SIZE + 1];
-	ssize_t bytes_read;
-	char *temp;
-
-	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
-		return (NULL);
-	while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
-	{
-		buffer[bytes_read] = '\0';
-		temp = ft_strjoin(leftover[fd], buffer);
-		free(leftover[fd]);
-		leftover[fd] = temp;
-
-		if (ft_strchr(leftover[fd], '\n'))
-			break ;
-	}
-	if (bytes_read < 0)      
-	{
-		free(leftover[fd]);
-		leftover[fd] = NULL;
-		return (NULL);
-	}
-	return (extract_line(&leftover[fd]));
-}
-
-int main(void)
-{
-    int fd = open("test.txt", O_RDONLY);
-    if (fd < 0)
-    {
-        perror("open");
-        return 1;
-    }
-
-    char *line;
-    while ((line = get_next_line(fd)) != NULL)
-    {
-        printf("%s", line); 
-        free(line);         
-    }
-
-    close(fd);
-    return 0;
-}
-
-
-
-
