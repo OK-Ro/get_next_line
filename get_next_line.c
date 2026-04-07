@@ -6,13 +6,11 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:51:48 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/07 13:52:00 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/07 14:21:34 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-// only_nl.txt         : 1.OK 2.OK 3_LEAKS.OK 4_NULL_CHECK.KO 
 
 static char	*extract_line(char **leftover)
 {
@@ -49,7 +47,9 @@ char	*get_next_line(int fd)
 	char		buffer[BUFFER_SIZE + 1];
 	
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);	
+		return (NULL);
+	if (!leftover)
+		leftover = ft_strdup("");
 	read_bytes = read(fd, buffer, BUFFER_SIZE);
 	while (read_bytes > 0)
 	{
