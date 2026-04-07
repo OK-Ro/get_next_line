@@ -8,6 +8,8 @@ This project implements the `get_next_line` function, which reads a line from a 
 
 The goal is to create a reusable function that simplifies reading lines from files or streams, teaching concepts like static variables, buffer management, and dynamic memory allocation in C.
 
+---
+
 ## Instructions
 
 ### Compilation
@@ -35,6 +37,8 @@ Run the test program:
 
 The test reads from `test.txt` and prints each line.
 
+---
+
 ## Algorithm Explanation
 
 The `get_next_line` function uses a static variable to store leftover data between calls, allowing it to handle partial reads efficiently. The algorithm works as follows:
@@ -47,9 +51,75 @@ The `get_next_line` function uses a static variable to store leftover data betwe
 
 This approach minimizes reads by stopping as soon as a newline is found, rather than reading the entire file at once. The use of a static variable ensures state persistence across function calls for the same file descriptor.
 
+---
+
+## Bonus Part
+
+### Overview
+
+The bonus part extends `get_next_line` with two enhancements:
+
+- **One static variable only** — the entire per-fd state is stored in a single `static char *leftover[MAX_FD]` array declaration.
+- **Multiple file descriptor support** — the function can interleave reads across different fds (e.g., fd 3, 4, 5) without losing track of any read state.
+
+### Files
+
+| File | Description |
+|------|-------------|
+| `get_next_line_bonus.c` | Main function and `extract_line` helper |
+| `get_next_line_bonus.h` | Header with prototype and `MAX_FD` define |
+| `get_next_line_utils_bonus.c` | Same helper functions as mandatory, `_bonus` suffix |
+
+### Compilation
+
+```bash
+cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line_bonus.c get_next_line_utils_bonus.c main.c -o gnl_bonus
+```
+
+### How It Works
+
+The key change is replacing the single `static char *leftover` with an array indexed by fd:
+
+```c
+static char *leftover[MAX_FD];
+```
+
+This is still **one static variable**. Each index maps to a separate fd's read state:
+
+```
+leftover[3] → state for fd 3
+leftover[4] → state for fd 4
+leftover[5] → state for fd 5
+```
+
+Every call to `get_next_line(fd)` only touches `leftover[fd]`, so fds never interfere with each other. `MAX_FD` is defined as `1024`, matching the typical Unix per-process file descriptor limit.
+
+### Example Usage
+
+```c
+int fd1 = open("file1.txt", O_RDONLY);
+int fd2 = open("file2.txt", O_RDONLY);
+
+char *line;
+line = get_next_line(fd1); // reads line 1 from file1
+line = get_next_line(fd2); // reads line 1 from file2
+line = get_next_line(fd1); // reads line 2 from file1 — state preserved
+line = get_next_line(fd2); // reads line 2 from file2 — state preserved
+```
+
+### Validation
+
+An invalid fd (negative or >= `MAX_FD`) returns `NULL` immediately:
+
+```c
+if (fd < 0 || fd >= MAX_FD || BUFFER_SIZE <= 0)
+    return (NULL);
+```
+
+---
+
 ## Resources
 
 - [42 Get Next Line Subject](https://cdn.intra.42.fr/pdf/pdf/118977/en.subject.pdf) - Official project description
 - [Static Variables in C](https://www.geeksforgeeks.org/static-variables-in-c/) - Explanation of static variables
 - [File Descriptors in Unix](https://www.gnu.org/software/libc/manual/html_node/File-Descriptors.html) - Understanding file descriptors
-

@@ -6,8 +6,10 @@
 #include <stdio.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 32
+#  define BUFFER_SIZE 42
 # endif
+
+# define MAX_FD 1024
 
 char	*get_next_line(int fd);
 
