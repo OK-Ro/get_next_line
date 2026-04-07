@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:41:49 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/03 13:10:44 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/07 10:52:52 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define GET_NEXT_LINE_H
 # include <stdlib.h>
 # include <unistd.h>
+#include <fcntl.h>
+#include <stdio.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 32
