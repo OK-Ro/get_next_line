@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:51:48 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/07 14:26:42 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/07 16:29:39 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,18 @@ static char	*extract_line(char **leftover)
 	if (new_position)
 	{
 		line = ft_substr(*leftover, 0, new_position - *leftover + 1);
+		if (!line)
+			return (NULL);
 		temp = ft_strdup(new_position + 1);
+		if (!temp)
+			return (free(line), NULL);
 		free(*leftover);
 		*leftover = temp;
 		return (line);
 	}
 	line = ft_strdup(*leftover);
+	if (!line)
+		return (NULL);
 	free(*leftover);
 	*leftover = NULL;
 	return (line);
@@ -45,20 +51,23 @@ char	*get_next_line(int fd)
 	ssize_t		read_bytes;
 	char		*temp;
 	char		buffer[BUFFER_SIZE + 1];
+	char		*str;
 	
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!leftover)
-		leftover = ft_strdup("");
 	read_bytes = read(fd, buffer, BUFFER_SIZE);
 	while (read_bytes > 0)
 	{
 		buffer[read_bytes] = '\0';
 		temp = ft_strjoin(leftover, buffer);
+		if (!temp)
+			return (NULL);
 		free(leftover);
 		leftover = temp;
 		if (ft_strchr(leftover, '\n'))
-			break ;
+			break ;	
+		free(leftover);
+		leftover = NULL;
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 	}
 	if (read_bytes < 0)
@@ -67,13 +76,12 @@ char	*get_next_line(int fd)
 		leftover = NULL;
 		return (NULL);
 	}
-	return (extract_line(&leftover));
+	str = extract_line(&leftover);
+	if (!str)
+	{
+		free(leftover);
+		leftover = NULL;
+		return(NULL);
+	}
+	return (str);
 }
-
-/*
-nvalid fd          : 1.OK 2.OK 3.OK 4_LEAKS.OK 5_NULL_CHECK.OK 
-empty.txt           : 1.OK 2.OK 3_LEAKS.OK 4_NULL_CHECK.OK 
-1char.txt           : 1.OK 2.OK 3_LEAKS.OK 4_NULL_CHECK.OK 
-one_line_no_nl.txt  : 1.OK 2.OK 3_LEAKS.OK 4_NULL_CHECK.OK 
-only_nl.txt         : 1.OK 2.OK 3_LEAKS.OK 4_NULL_CHECK.KO 
-*/ 
