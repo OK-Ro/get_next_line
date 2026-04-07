@@ -16,6 +16,7 @@ The goal is to create a reusable function that simplifies reading lines from fil
 
 Compile the source files with the required flags and define `BUFFER_SIZE` (default 42 if not specified):
 
+
 ```bash
 cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c main.c -o gnl_test
 ```
