@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 16:10:17 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/07 17:50:16 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/07 17:50:33 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,10 @@ int	main(int ac, char **av)
 	{
 		// Default tests
 		test_file("test.txt");
-
+		test_file("empty.txt");
+		test_file("only_nl.txt");
+		test_file("multiple_nl.txt");
+		test_file("giant_line.txt");
 		test_multiple_fds();
 		test_stdin();
 		test_invalid_fd();
