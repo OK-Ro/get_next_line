@@ -6,9 +6,11 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 11:19:37 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/07 11:19:41 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/07 11:20:15 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *s)
 {
