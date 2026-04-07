@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 16:10:17 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/06 16:24:03 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/06 16:49:09 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	main(void)
 {
 	int		fd;
 	char	*line;
+	int		line_num;
 
 	fd = open("test.txt", O_RDONLY);
 	if (fd < 0)
@@ -27,11 +28,12 @@ int	main(void)
 		perror("open");
 		return (1);
 	}
-	line = get_next_line(fd);
-	if (line)
+	line_num = 1;
+	while ((line = get_next_line(fd)) != NULL)
 	{
-		printf("Line 1: %s", line);
+		printf("Line %d: %s", line_num, line);
 		free(line);
+		line_num++;
 	}
 	close(fd);
 	return (0);

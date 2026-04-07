@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:51:57 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/06 16:17:57 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/06 16:48:56 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,31 +41,12 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)s);
 	return (NULL);
 }
-static char	*concat_strings(char *dest, const char *s1, const char *s2)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (s1[i])
-	{
-		dest[i] = s1[i];
-		i++;
-	}
-	j = 0;
-	while (s2[j])
-	{
-		dest[i] = s2[j];
-		i++;
-		j++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*newstring;
+	int		i;
+	int		j;
 
 	if (!s1 && !s2)
 		return (NULL);
@@ -76,7 +57,17 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	newstring = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!newstring)
 		return (NULL);
-	return (concat_strings(newstring, s1, s2));
+	i = 0;
+	while (s1[i])
+	{
+		newstring[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j])
+		newstring[i++] = s2[j++];
+	newstring[i] = '\0';
+	return (newstring);
 }
 
 char	*ft_strdup(const char *s1)
@@ -112,11 +103,13 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	s_len = ft_strlen(s);
 	if (start >= s_len)
 		return (ft_strdup(""));
+	if (len > s_len - start)
+		len = s_len - start;
 	sub = malloc((len + 1) * sizeof(char));
 	if (!sub)
 		return (NULL);
 	i = 0;
-	while (i < len && s[start + i])
+	while (i < len)
 	{
 		sub[i] = s[start + i];
 		i++;
