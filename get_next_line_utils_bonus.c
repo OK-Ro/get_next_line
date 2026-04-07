@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 11:19:37 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/07 11:21:05 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/07 11:21:25 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,26 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		newstring[i++] = s2[j++];
 	newstring[i] = '\0';
 	return (newstring);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	char	*duplicate;
+	size_t	i;
+	size_t	len;
+
+	if (!s1)
+		return (NULL);
+	len = ft_strlen(s1);
+	duplicate = malloc((len + 1) * sizeof(char));
+	if (!duplicate)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		duplicate[i] = s1[i];
+		i++;
+	}
+	duplicate[i] = '\0';
+	return (duplicate);
 }
