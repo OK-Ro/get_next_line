@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:51:48 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/07 16:36:08 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/07 17:09:40 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,18 @@ static char	*extract_line(char **leftover)
 	char	*line;
 
 	if (!*leftover || **leftover == '\0')
-	{
-		free(*leftover);
-		*leftover = NULL;
-		return (NULL);
-	}
+		return (free(*leftover), *leftover = NULL, NULL);
 	new_position = ft_strchr(*leftover, '\n');
 	if (new_position)
 	{
 		line = ft_substr(*leftover, 0, new_position - *leftover + 1);
-		temp = ft_strdup(new_position + 1);
-		free(*leftover);
-		*leftover = temp;
-		return (line);
+		if (!line)
+			return (free(*leftover), *leftover = NULL, NULL);
+		if (*(new_position + 1))
+			temp = ft_strdup(new_position + 1);
+		else
+			temp = NULL;
+		return (free(*leftover), *leftover = temp, line);
 	}
 	line = ft_strdup(*leftover);
 	free(*leftover);
@@ -45,35 +44,24 @@ char	*get_next_line(int fd)
 	ssize_t		read_bytes;
 	char		*temp;
 	char		buffer[BUFFER_SIZE + 1];
-	
+
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!leftover)
-		leftover = ft_strdup("");
-	read_bytes = read(fd, buffer, BUFFER_SIZE);
-	while (read_bytes > 0)
+	read_bytes = 1;
+	while (read_bytes > 0 && (!leftover || !ft_strchr(leftover, '\n')))
 	{
-		buffer[read_bytes] = '\0';
-		temp = ft_strjoin(leftover, buffer);
-		free(leftover);
-		leftover = temp;
-		if (ft_strchr(leftover, '\n'))
-			break ;
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
+		if (read_bytes > 0)
+		{
+			buffer[read_bytes] = '\0';
+			temp = ft_strjoin(leftover, buffer);
+			free(leftover);
+			leftover = temp;
+		}
 	}
 	if (read_bytes < 0)
-	{
-		free(leftover);
-		leftover = NULL;
-		return (NULL);
-	}
+		return (free(leftover), leftover = NULL, NULL);
+	if (!leftover || *leftover == '\0')
+		return (free(leftover), leftover = NULL, NULL);
 	return (extract_line(&leftover));
 }
-
-/*
-nvalid fd          : 1.OK 2.OK 3.OK 4_LEAKS.OK 5_NULL_CHECK.OK 
-empty.txt           : 1.OK 2.OK 3_LEAKS.OK 4_NULL_CHECK.OK 
-1char.txt           : 1.OK 2.OK 3_LEAKS.OK 4_NULL_CHECK.OK 
-one_line_no_nl.txt  : 1.OK 2.OK 3_LEAKS.OK 4_NULL_CHECK.OK 
-only_nl.txt         : 1.OK 2.OK 3_LEAKS.OK 4_NULL_CHECK.KO 
-*/ 

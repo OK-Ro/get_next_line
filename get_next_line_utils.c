@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:51:57 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/07 13:56:02 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/07 17:26:26 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,24 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	size_t				i;
+	unsigned char		*d;
+	const unsigned char	*s;
+
+	if (!dest && !src)
+		return (NULL);
+	d = (unsigned char *)dest;
+	s = (const unsigned char *)src;
+	i = 0;
+	while (i < n)
+	{
+		d[i] = s[i];
+		i++;
+	}
+	return (dest);
+}
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*newstring;
