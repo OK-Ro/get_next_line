@@ -142,14 +142,14 @@ int	main(void)
 		return (1);
 	}
 	
-	printf("\n========== FILE 1: file1.txt ==========\n");
+	printf("\n========== FILE 1: file1.txt ====================================\n");
 	line_num = 1;
 	while ((line = get_next_line(fd1)) != NULL)
 	{
 		printf("Line %2d: %s", line_num++, line);
 		free(line);
 	}
-	printf("Total lines in file1: %d\n", line_num - 1);
+	printf("Total lines in file1: [%d]\n", line_num - 1);
 	close(fd1);
 	
 	// Open file2
@@ -160,14 +160,14 @@ int	main(void)
 		return (1);
 	}
 	
-	printf("\n========== FILE 2: file2.txt ==========\n");
+	printf("\n========== FILE 2: file2.txt ====================================\n");
 	line_num = 1;
 	while ((line = get_next_line(fd2)) != NULL)
 	{
 		printf("Line %2d: %s", line_num++, line);
 		free(line);
 	}
-	printf("Total lines in file2: %d\n", line_num - 1);
+	printf("Total lines in file2: [%d]\n", line_num - 1);
 	close(fd2);
 	
 	return (0);
