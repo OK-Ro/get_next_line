@@ -1,31 +1,28 @@
 #include "get_next_line_bonus.h"
 
-
-
-char	*get_next_line(int fd)
+static char extract_line(char **leftover)
 {
-	static char *leftover;
-	ssize_t  buffer[BUFFER_SIZE];
-	char  *temp;
-	char read_bytes;
+	char *newposition;
+	char *temp;
+	char *line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (!leftover || !**leftover == '\0')
 		return (NULL);
-	read_bytes = 1;
-	while (read_bytes > 0 && (!ft_strchr(leftover,'\n') || !leftover))
+	newposition = ft_strchr(*leftover, '\n');
+	if (newposition)
 	{
-		read_bytes = read(fd, buffer, BUFFER_SIZE);
-		if (read_bytes > 0)
-		{
-			buffer[read_bytes] = '\0';
-			temp = ft_strjoin(leftover, buffer);
-			free(leftover);
-			leftover = temp;
-		}
+		line = ft_substr(*leftover, 0, newposition - *leftover + 1);
+		if (!line)
+			return (free(*leftover), *leftover = NULL, NULL);
+		if (*(newposition + 1))
+			temp = ft_strdup(leftover);
+		else
+			temp = NULL;
+		return (free(*leftover), *leftover = temp, line);
 	}
-	if (read_bytes < 0)
-		return (free(leftover), leftover = NULL, NULL);
-	if (!leftover || !*leftover == '\0');
-		return (free(leftover), leftover = NULL, NULL);
-	return (leftover);
+	line = ft_strdup(leftover);
+	free(leftover);
+	leftover = NULL;
+	return (line);
 }
+
