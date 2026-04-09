@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:51:48 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/09 11:49:34 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/09 11:49:44 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	*extract_line(char **leftover)
 	}
 	paragragh = ft_strdup(*leftover);
 	free (*leftover);
-	*leftover = NULL;
+	leftover = NULL;
 	return (paragragh);
 }
 
