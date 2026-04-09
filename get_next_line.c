@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:51:48 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/09 11:50:19 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/09 11:50:28 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,12 @@ char	*get_next_line(int fd)
 	
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	read_bytes = 1;
+		
 	while (read_bytes > 0 && (!leftover || !ft_strchr(leftover, '\n')))
 	{
-		read_bytes = read(fd, buffer, b)
 		if (read_bytes > 0)
 		{
-			temp = ft_strjoin(leftover, buffer);
-			
+			/* code */
 		}
 		
 	}
