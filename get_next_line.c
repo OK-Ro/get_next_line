@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 16:51:48 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/09 11:49:44 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/09 11:49:55 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ static char	*extract_line(char **leftover)
 	char	*rest;
 	
 	if (!leftover || !**leftover == '\0')
-		return (free(*leftover), *leftover = NULL, NULL);
+		return (free(leftover), *leftover = NULL, NULL);
 	line_found = ft_strchr(*leftover, '\n');
 	if(line_found)
 	{
 		paragragh = ft_substr(*leftover, 0, line_found - *leftover + 1);
 		if (!paragragh)
-			return (free(*leftover), *leftover = NULL, NULL);
+			return (free(leftover), *leftover = NULL, NULL);
 		if (*(line_found + 1))
 			rest = ft_strdup(*leftover);
 		else
@@ -61,8 +61,8 @@ char	*get_next_line(int fd)
 		
 	}
 	if (read_bytes < 0)
-		return (free(leftover), leftover = NULL, NULL);
-	if (!leftover || *leftover == '\0')
-		return (free(leftover), leftover = NULL, NULL);
+		
+	if (!leftover || !*leftover == '\0')
+		return (free(leftover), *leftover = NULL, NULL);
 	return (extract_line(&leftover));
 }
