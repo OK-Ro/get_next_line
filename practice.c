@@ -1,30 +1,30 @@
 #include "get_next_line_bonus.h"
 
-// static char extract_line(char **leftover)
-// {
-// 	char *newposition;
-// 	char *temp;
-// 	char *line;
+static char extract_line(char **leftover)
+{
+	char *newposition;
+	char *temp;
+	char *line;
 
-// 	if (!leftover || **leftover == '\0')
-// 		return (free(leftover), leftover = NULL, NULL);
-// 	newposition = ft_strchr(leftover,'\n');
-// 	if (newposition)
-// 	{
-// 		line = ft_substr(*leftover, 0, newposition - *leftover + 1);
-// 		if (!line)
-// 			return (free(*leftover), *leftover = NULL, NULL);
-// 		if (*(newposition + 1))
-// 			temp = ft_strdup(newposition + 	1);
-// 		else
-// 			temp = NULL;
-// 		return (free(*leftover), *leftover = temp, line);
-// 	}
-// 	line = ft_strdup(*leftover);
-// 	free(*leftover);
-// 	*leftover = NULL;
-// 	return (line);
-// }
+	if (!leftover || **leftover == '\0')
+		return (free(leftover), leftover = NULL, NULL);
+	newposition = ft_strchr(leftover,'\n');
+	if (newposition)
+	{
+		line = ft_substr(*leftover, 0, newposition - *leftover + 1);
+		if (!line)
+			return (free(*leftover), *leftover = NULL, NULL);
+		if (*(newposition + 1))
+			temp = ft_strdup(newposition + 	1);
+		else
+			temp = NULL;
+		return (free(*leftover), *leftover = temp, line);
+	}
+	line = ft_strdup(*leftover);
+	free(*leftover);
+	*leftover = NULL;
+	return (line);
+}
 
 char	*get_next_line(int fd)
 {
