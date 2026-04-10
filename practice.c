@@ -26,30 +26,30 @@
 // 	return (line);
 // }
 
-// char	*get_next_line(int fd)
-// {
-// 	char *leftover;
-// 	ssize_t bytes_read;
-// 	char *temp;
-// 	char buffer[BUFFER_SIZE + 1];
+char	*get_next_line(int fd)
+{
+	char *leftover;
+	ssize_t bytes_read;
+	char *temp;
+	char buffer[BUFFER_SIZE + 1];
 
-// if (fd < 0 || BUFFER_SIZE < 0)
-// 	return (NULL);
-// bytes_read = 1;
-// if (bytes_read > 0 && (!leftover || !ft_strchr(leftover, '\n')))
-// {
-// 	bytes_read = read(fd, buffer, BUFFER_SIZE);
-// 	if (bytes_read > 0)
-// 	{
-// 		buffer[bytes_read] = '\0';
-// 		temp = ft_strjoin(leftover, buffer);
-// 		free(leftover);
-// 		leftover = temp;
-// 	}
-// }
-// 	if(bytes_read < 0)
-// 		return (free(leftover), leftover = NULL, NULL);
-// 	if (!leftover || *leftover == '\0')
-// 		return (free(leftover), leftover = NULL, NULL);
-// 	return (extract_line(&leftover));
-// }
+if (fd < 0 || BUFFER_SIZE < 0)
+	return (NULL);
+bytes_read = 1;
+if (bytes_read > 0 && (!leftover || !ft_strchr(leftover, '\n')))
+{
+	bytes_read = read(fd, buffer, BUFFER_SIZE);
+	if (bytes_read > 0)
+	{
+		buffer[bytes_read] = '\0';
+		temp = ft_strjoin(leftover, buffer);
+		free(leftover);
+		leftover = temp;
+	}
+}
+	if(bytes_read < 0)
+		return (free(leftover), leftover = NULL, NULL);
+	if (!leftover || *leftover == '\0')
+		return (free(leftover), leftover = NULL, NULL);
+	return (extract_line(&leftover));
+}
