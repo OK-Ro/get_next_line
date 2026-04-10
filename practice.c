@@ -2,53 +2,54 @@
 
 static char extract_line(char **leftover)
 {
-	char *line;
 	char *newposition;
 	char *temp;
+	char *line;
 
-	if (!leftover || !**leftover == '\0')
+	if (!leftover || **leftover == '\0')
 		return (free(leftover), leftover = NULL, NULL);
-	newposition =  ft_strchr(leftover, '\n');
+	newposition = ft_strchr(leftover,'\n');
 	if (newposition)
 	{
 		line = ft_substr(*leftover, 0, newposition - *leftover + 1);
 		if (!line)
-			return (free(leftover), leftover = NULL, NULL);
+			return (free(*leftover), *leftover = NULL, NULL);
 		if (*(newposition + 1))
-			temp = ft_strdup(*leftover);
+			temp = ft_strdup(newposition + 	1);
 		else
 			temp = NULL;
+		return (free(*leftover), *leftover = temp, line);
 	}
 	line = ft_strdup(*leftover);
 	free(*leftover);
-	leftover = NULL;
+	*leftover = NULL;
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char *leftover;
+	char *leftover;
+	ssize_t bytes_read;
+	char *temp;
 	char buffer[BUFFER_SIZE + 1];
-	ssize_t read_byes;
-	char temp;
-	
-	if (!fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	read_byes = 1;
-	while (read_byes > 0 && (!leftover || !ft_strchr(leftover, '\n')))
+
+if (fd < 0 || BUFFER_SIZE < 0)
+	return (NULL);
+bytes_read = 1;
+if (bytes_read > 0 && (!leftover || !ft_strchr(leftover, '\n')))
+{
+	bytes_read = read(fd, buffer, BUFFER_SIZE);
+	if (bytes_read > 0)
 	{
-		read_byes = read(fd, buffer, BUFFER_SIZE);
-		if (read_byes > 0)
-		{
-			buffer[read_byes] = '\0';
-			temp = ft_strjoin(leftover, buffer);
-			free(leftover);
-			leftover = temp;
-		}
+		buffer[bytes_read] = '\0';
+		temp = ft_strjoin(leftover, buffer);
+		free(leftover);
+		leftover = temp;
 	}
-	if (read_byes < 0)
+}
+	if(bytes_read < 0)
 		return (free(leftover), leftover = NULL, NULL);
-	if (!leftover || !*leftover == '\0')
+	if (!leftover || *leftover == '\0')
 		return (free(leftover), leftover = NULL, NULL);
-	return (extract_line(&leftover));	
+	return (extract_line(&leftover));
 }
