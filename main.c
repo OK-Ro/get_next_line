@@ -6,7 +6,7 @@
 /*   By: rokuni <rokuni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 16:10:17 by rokuni            #+#    #+#             */
-/*   Updated: 2026/04/10 15:35:42 by rokuni           ###   ########.fr       */
+/*   Updated: 2026/04/10 15:35:54 by rokuni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,6 @@
 #include <unistd.h>
 
 
-int main(void)
-{
-    int fd;
-    char *line;
-    int line_num;
-
-    fd = open("test.txt", O_RDONLY);
-    if (fd < 0)
-    {
-        printf("Error opening file\n");
-        return (1);
-    }
-
-    printf("\n========== FILE: test.txt ====================================\n");
-    line_num = 1;
-    while ((line = get_next_line(fd)) != NULL)
-    {
-        printf("Line %2d: %s", line_num++, line);
-        free(line);
-    }
-    printf("Total lines: [%d]\n", line_num - 1);
-    close(fd);
-
-    return (0);
-}
 
 // int main(void)
 // {
